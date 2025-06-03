@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: java-webapp-deploy
+  labels:
+    app: javaWebApp
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: javaWebApp
+  template:
+    metadata:
+      labels:
+        app: javaWebApp
+    spec:
+      containers:
+      - name: javaWebApp-container
+        image: shinojc/java-webapp-image
+        ports:
+        - containerPort: 8080
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: javaWebApp-service
+  labels:
+    app: javaWebApp
+spec:
+  selector:
+    app: javaWebApp
+  type: NodePort
+  ports:
+  - nodePort: 
+    port: 8080
+    targetPort: 8080
